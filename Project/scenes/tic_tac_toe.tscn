@@ -1,0 +1,201 @@
+[gd_scene load_steps=19 format=2]
+
+[ext_resource path="res://Graphics/board.png" type="Texture" id=1]
+[ext_resource path="res://Graphics/x.png" type="Texture" id=2]
+[ext_resource path="res://Graphics/o.png" type="Texture" id=3]
+[ext_resource path="res://scenes/tic_tac_toe.gd" type="Script" id=4]
+[ext_resource path="res://Graphics/board_background.png" type="Texture" id=5]
+[ext_resource path="res://Graphics/games_0000s_0004_vs.png" type="Texture" id=6]
+[ext_resource path="res://Graphics/games_0000s_0008_player_2.png" type="Texture" id=7]
+[ext_resource path="res://Graphics/games_0000s_0005_pc_hover.png" type="Texture" id=8]
+[ext_resource path="res://Graphics/games_0000s_0001_hai_perso.png" type="Texture" id=9]
+[ext_resource path="res://Graphics/games_0000s_0007_player_2_hover.png" type="Texture" id=10]
+[ext_resource path="res://Graphics/games_0000s_0010_player_1.png" type="Texture" id=11]
+[ext_resource path="res://Graphics/games_0000s_0000_hai_vinto.png" type="Texture" id=12]
+[ext_resource path="res://Graphics/games_0000s_0006_pc.png" type="Texture" id=13]
+[ext_resource path="res://Graphics/games_0000s_0009_player_1_hover.png" type="Texture" id=14]
+[ext_resource path="res://Graphics/hai_pareggiato.png" type="Texture" id=15]
+[ext_resource path="res://Graphics/games_0000s_0000_player_2_ha_vinto.png" type="Texture" id=16]
+[ext_resource path="res://Graphics/games_0000s_0001_player_1_ha_vinto.png" type="Texture" id=17]
+
+[sub_resource type="TileSet" id=1]
+0/name = "o.png 0"
+0/texture = ExtResource( 3 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 0, 0, 128, 128 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape_one_way = false
+0/shape_one_way_margin = 0.0
+0/shapes = [  ]
+0/z_index = 0
+1/name = "x.png 1"
+1/texture = ExtResource( 2 )
+1/tex_offset = Vector2( 0, 0 )
+1/modulate = Color( 1, 1, 1, 1 )
+1/region = Rect2( 0, 0, 128, 128 )
+1/tile_mode = 0
+1/occluder_offset = Vector2( 0, 0 )
+1/navigation_offset = Vector2( 0, 0 )
+1/shape_offset = Vector2( 0, 0 )
+1/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+1/shape_one_way = false
+1/shape_one_way_margin = 0.0
+1/shapes = [  ]
+1/z_index = 0
+
+[node name="tic_tac_toe" type="Node2D"]
+script = ExtResource( 4 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( -107, -107 )
+anchor_mode = 0
+current = true
+
+[node name="Board" type="Node2D" parent="."]
+
+[node name="BordoBoard" type="Sprite" parent="Board"]
+position = Vector2( 191, 191 )
+texture = ExtResource( 5 )
+
+[node name="board" type="Sprite" parent="Board"]
+scale = Vector2( 0.64, 0.64 )
+texture = ExtResource( 1 )
+centered = false
+
+[node name="UI" type="Node2D" parent="."]
+
+[node name="vs" type="Sprite" parent="UI"]
+position = Vector2( 192, 192 )
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="player_1" type="Sprite" parent="UI"]
+visible = false
+position = Vector2( 192, 192 )
+texture = ExtResource( 11 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="player_1_hover" type="Sprite" parent="UI"]
+visible = false
+position = Vector2( 192, 192 )
+texture = ExtResource( 14 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="player_2" type="Sprite" parent="UI"]
+visible = false
+position = Vector2( 192, 192 )
+texture = ExtResource( 7 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="player_2_hover" type="Sprite" parent="UI"]
+visible = false
+position = Vector2( 192, 192 )
+texture = ExtResource( 10 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="pc" type="Sprite" parent="UI"]
+visible = false
+position = Vector2( 192, 192 )
+texture = ExtResource( 13 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="pc_hover" type="Sprite" parent="UI"]
+visible = false
+position = Vector2( 192, 192 )
+texture = ExtResource( 8 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="hai_vinto" type="Sprite" parent="UI"]
+visible = false
+position = Vector2( 192, 192 )
+texture = ExtResource( 12 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="hai_perso" type="Sprite" parent="UI"]
+visible = false
+position = Vector2( 192, 192 )
+texture = ExtResource( 9 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="hai_pareggiato" type="Sprite" parent="UI"]
+visible = false
+position = Vector2( 192, 192 )
+texture = ExtResource( 15 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="player_1_ha_vinto" type="Sprite" parent="UI"]
+visible = false
+position = Vector2( 192, 192 )
+texture = ExtResource( 17 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="player_2_ha_vinto" type="Sprite" parent="UI"]
+visible = false
+position = Vector2( 192, 192 )
+texture = ExtResource( 16 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Buttons" type="Control" parent="UI"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="torna_al_menu" type="Button" parent="UI/Buttons"]
+margin_left = -64.0
+margin_top = 430.0
+margin_right = 39.0
+margin_bottom = 450.0
+text = "Torna al menù"
+
+[node name="inizia_una_nuova_partita" type="Button" parent="UI/Buttons"]
+margin_left = 50.0
+margin_top = 430.0
+margin_right = 153.0
+margin_bottom = 450.0
+text = "Inizia una nuova partita"
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource( 1 )
+cell_size = Vector2( 128, 128 )
+format = 1
+
+[node name="TileMapHover" type="TileMap" parent="."]
+modulate = Color( 1, 1, 1, 0.498039 )
+tile_set = SubResource( 1 )
+cell_size = Vector2( 128, 128 )
+format = 1
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="pressed" from="UI/Buttons/torna_al_menu" to="." method="_on_torna_al_menu_pressed"]
+[connection signal="pressed" from="UI/Buttons/inizia_una_nuova_partita" to="." method="_on_inizia_una_nuova_partita_pressed"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
