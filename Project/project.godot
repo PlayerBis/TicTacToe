@@ -15,7 +15,8 @@ run/main_scene="res://scenes/Menu.tscn"
 
 [autoload]
 
-GameManager="*res://GameManager.gd"
+config="*res://config.gd"
+MusicController="*res://autoloads/MusicController.tscn"
 
 [display]
 

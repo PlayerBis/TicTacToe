@@ -1,22 +1,11 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Graphics/board.png" type="Texture" id=1]
 [ext_resource path="res://Graphics/x.png" type="Texture" id=2]
 [ext_resource path="res://Graphics/o.png" type="Texture" id=3]
 [ext_resource path="res://scenes/tic_tac_toe.gd" type="Script" id=4]
 [ext_resource path="res://Graphics/board_background.png" type="Texture" id=5]
-[ext_resource path="res://Graphics/games_0000s_0004_vs.png" type="Texture" id=6]
-[ext_resource path="res://Graphics/games_0000s_0008_player_2.png" type="Texture" id=7]
-[ext_resource path="res://Graphics/games_0000s_0005_pc_hover.png" type="Texture" id=8]
-[ext_resource path="res://Graphics/games_0000s_0001_hai_perso.png" type="Texture" id=9]
-[ext_resource path="res://Graphics/games_0000s_0007_player_2_hover.png" type="Texture" id=10]
-[ext_resource path="res://Graphics/games_0000s_0010_player_1.png" type="Texture" id=11]
-[ext_resource path="res://Graphics/games_0000s_0000_hai_vinto.png" type="Texture" id=12]
-[ext_resource path="res://Graphics/games_0000s_0006_pc.png" type="Texture" id=13]
-[ext_resource path="res://Graphics/games_0000s_0009_player_1_hover.png" type="Texture" id=14]
-[ext_resource path="res://Graphics/hai_pareggiato.png" type="Texture" id=15]
-[ext_resource path="res://Graphics/games_0000s_0000_player_2_ha_vinto.png" type="Texture" id=16]
-[ext_resource path="res://Graphics/games_0000s_0001_player_1_ha_vinto.png" type="Texture" id=17]
+[ext_resource path="res://font/Outline.ttf" type="DynamicFontData" id=6]
 
 [sub_resource type="TileSet" id=1]
 0/name = "o.png 0"
@@ -48,11 +37,20 @@
 1/shapes = [  ]
 1/z_index = 0
 
+[sub_resource type="DynamicFont" id=2]
+size = 50
+use_mipmaps = true
+font_data = ExtResource( 6 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 100
+font_data = ExtResource( 6 )
+
 [node name="tic_tac_toe" type="Node2D"]
 script = ExtResource( 4 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( -107, -107 )
+position = Vector2( -109, -109 )
 anchor_mode = 0
 current = true
 
@@ -67,102 +65,96 @@ scale = Vector2( 0.64, 0.64 )
 texture = ExtResource( 1 )
 centered = false
 
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource( 1 )
+cell_size = Vector2( 128, 128 )
+format = 1
+
+[node name="TileMapHover" type="TileMap" parent="."]
+modulate = Color( 1, 1, 1, 0.498039 )
+tile_set = SubResource( 1 )
+cell_size = Vector2( 128, 128 )
+format = 1
+
 [node name="UI" type="Node2D" parent="."]
 
-[node name="vs" type="Sprite" parent="UI"]
-position = Vector2( 192, 192 )
-texture = ExtResource( 6 )
-__meta__ = {
-"_edit_lock_": true
-}
+[node name="player_1" type="Label" parent="UI"]
+margin_left = -16.0
+margin_top = -77.0
+margin_right = 128.0
+margin_bottom = -16.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Player 1"
+align = 1
+valign = 1
 
-[node name="player_1" type="Sprite" parent="UI"]
-visible = false
-position = Vector2( 192, 192 )
-texture = ExtResource( 11 )
-__meta__ = {
-"_edit_lock_": true
-}
+[node name="player_2" type="Label" parent="UI"]
+margin_left = 256.0
+margin_top = -77.0
+margin_right = 397.0
+margin_bottom = -16.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Player 2"
+align = 1
+valign = 1
 
-[node name="player_1_hover" type="Sprite" parent="UI"]
-visible = false
-position = Vector2( 192, 192 )
-texture = ExtResource( 14 )
-__meta__ = {
-"_edit_lock_": true
-}
+[node name="score" type="Label" parent="UI"]
+margin_left = 128.0
+margin_top = -77.0
+margin_right = 256.0
+margin_bottom = -16.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "0 - 0"
+align = 1
+valign = 1
 
-[node name="player_2" type="Sprite" parent="UI"]
+[node name="game_over" type="Control" parent="UI"]
 visible = false
-position = Vector2( 192, 192 )
-texture = ExtResource( 7 )
-__meta__ = {
-"_edit_lock_": true
-}
+margin_left = -109.0
+margin_top = -109.0
+margin_right = 491.0
+margin_bottom = 491.0
 
-[node name="player_2_hover" type="Sprite" parent="UI"]
-visible = false
-position = Vector2( 192, 192 )
-texture = ExtResource( 10 )
-__meta__ = {
-"_edit_lock_": true
-}
+[node name="background" type="ColorRect" parent="UI/game_over"]
+margin_right = 600.0
+margin_bottom = 600.0
+color = Color( 0, 0, 0, 0.784314 )
 
-[node name="pc" type="Sprite" parent="UI"]
-visible = false
-position = Vector2( 192, 192 )
-texture = ExtResource( 13 )
-__meta__ = {
-"_edit_lock_": true
-}
+[node name="CenterContainer" type="CenterContainer" parent="UI/game_over"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -129.5
+margin_top = -134.0
+margin_right = 129.5
+margin_bottom = 134.0
 
-[node name="pc_hover" type="Sprite" parent="UI"]
-visible = false
-position = Vector2( 192, 192 )
-texture = ExtResource( 8 )
-__meta__ = {
-"_edit_lock_": true
-}
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/game_over/CenterContainer"]
+margin_right = 259.0
+margin_bottom = 268.0
 
-[node name="hai_vinto" type="Sprite" parent="UI"]
-visible = false
-position = Vector2( 192, 192 )
-texture = ExtResource( 12 )
-__meta__ = {
-"_edit_lock_": true
-}
+[node name="risultato" type="Label" parent="UI/game_over/CenterContainer/VBoxContainer"]
+margin_right = 259.0
+margin_bottom = 177.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 3 )
+text = "Player 1
+Ha vinto"
+align = 1
+valign = 1
 
-[node name="hai_perso" type="Sprite" parent="UI"]
-visible = false
-position = Vector2( 192, 192 )
-texture = ExtResource( 9 )
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="hai_pareggiato" type="Sprite" parent="UI"]
-visible = false
-position = Vector2( 192, 192 )
-texture = ExtResource( 15 )
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="player_1_ha_vinto" type="Sprite" parent="UI"]
-visible = false
-position = Vector2( 192, 192 )
-texture = ExtResource( 17 )
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="player_2_ha_vinto" type="Sprite" parent="UI"]
-visible = false
-position = Vector2( 192, 192 )
-texture = ExtResource( 16 )
-__meta__ = {
-"_edit_lock_": true
-}
+[node name="game_over_score" type="Label" parent="UI/game_over/CenterContainer/VBoxContainer"]
+margin_top = 181.0
+margin_right = 259.0
+margin_bottom = 268.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 3 )
+align = 1
+valign = 1
 
 [node name="Buttons" type="Control" parent="UI"]
 margin_right = 40.0
@@ -181,17 +173,6 @@ margin_top = 430.0
 margin_right = 153.0
 margin_bottom = 450.0
 text = "Inizia una nuova partita"
-
-[node name="TileMap" type="TileMap" parent="."]
-tile_set = SubResource( 1 )
-cell_size = Vector2( 128, 128 )
-format = 1
-
-[node name="TileMapHover" type="TileMap" parent="."]
-modulate = Color( 1, 1, 1, 0.498039 )
-tile_set = SubResource( 1 )
-cell_size = Vector2( 128, 128 )
-format = 1
 
 [node name="Timer" type="Timer" parent="."]
 one_shot = true

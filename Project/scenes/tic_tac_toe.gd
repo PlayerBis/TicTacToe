@@ -2,7 +2,6 @@ extends Node2D
 
 onready var tileMap = $TileMap
 onready var tileMapHover = $TileMapHover
-onready var timer_computer_move = $timer_computer_move
 enum Turn {PLAYER_1 = 1, PLAYER_2 = 0}
 var turn = Turn.PLAYER_1
 var mouse_pos
@@ -13,15 +12,18 @@ onready var rngRand = rng.randomize()
 
 func _ready():
 	game_over = false
+	$UI/player_1.text = config.nome
+	$UI/score.text = str(config.punteggio_player1) + "-" + str(config.punteggio_player2)
 	# UI
-	if GameManager.modality == GameManager.Enemies.MULTIPLAYER:
-		$UI/player_1_hover.visible = true
-		$UI/player_1.visible = true
-		$UI/player_2_hover.visible = true
+	if config.modality == config.Enemies.MULTIPLAYER:
+		$UI/player_1.text = config.nome
+		$UI/player_2.text = config.nome_avversario
+		$UI/player_2.add_color_override("font_color", Color(0, 0, 0, 0.5))
+		
 	else:
-		$UI/player_1_hover.visible = true
-		$UI/player_1.visible = true
-		$UI/pc_hover.visible = true
+		$UI/player_1.text = config.nome
+		$UI/player_2.text = config.nome_avversario
+		$UI/player_2.add_color_override("font_color", Color(0, 0, 0, 0.5))
 
 func _input(event):
 	mouse_pos = tileMap.world_to_map(get_global_mouse_position())
@@ -35,7 +37,7 @@ func _input(event):
 			mouse_pos.y >= 0):
 			if tileMap.get_cell(mouse_pos.x, mouse_pos.y) == -1:
 				tileMapHover.clear()
-				if GameManager.modality == GameManager.Enemies.COMPUTER:
+				if config.modality == config.Enemies.COMPUTER:
 					if turn == Turn.PLAYER_1:
 						tileMapHover.set_cell(mouse_pos.x, mouse_pos.y, Turn.PLAYER_1)
 				else:
@@ -51,10 +53,12 @@ func _input(event):
 			if event.button_index == BUTTON_LEFT and event.is_pressed():
 				if tileMap.get_cell(mouse_pos.x, mouse_pos.y) == -1:
 					if move_wait == false:
+						MusicController.play_selezione_music()
 						tileMap.set_cell(mouse_pos.x, mouse_pos.y, turn)
-						switch_turn()
-					_check_board()
-					if GameManager.modality == GameManager.Enemies.COMPUTER:
+						_check_board()
+						if game_over == false:
+							switch_turn()
+					if config.modality == config.Enemies.COMPUTER:
 						if tileMap.get_used_cells().size() != 9:
 							move_wait = true
 							$Timer.start()
@@ -74,26 +78,19 @@ func ai_computer():
 	random_num = rng.randi_range(0, num_posizioni_libere - 1)
 	
 	tileMap.set_cell(posizioni_libere[random_num][0], posizioni_libere[random_num][1], turn)
-	switch_turn()
 	_check_board()
+	if game_over == false:
+		switch_turn()
 		
 func switch_turn():
 	if turn == Turn.PLAYER_1:
 		turn = Turn.PLAYER_2
-		if GameManager.modality == GameManager.Enemies.COMPUTER:
-			$UI/player_1.visible = false
-			$UI/pc.visible = true
-		else:
-			$UI/player_1.visible = false
-			$UI/player_2.visible = true
+		$UI/player_1.add_color_override("font_color", Color(0, 0, 0, 0.5))
+		$UI/player_2.add_color_override("font_color", Color(0, 0, 0, 1))
 	else:
 		turn = Turn.PLAYER_1
-		if GameManager.modality == GameManager.Enemies.COMPUTER:
-			$UI/player_1.visible = true
-			$UI/pc.visible = false
-		else:
-			$UI/player_1.visible = true
-			$UI/player_2.visible = false
+		$UI/player_1.add_color_override("font_color", Color(0, 0, 0, 1))
+		$UI/player_2.add_color_override("font_color", Color(0, 0, 0, 0.5))
 		
 # Condizioni di vittoria
 func _check_board():
@@ -137,46 +134,44 @@ func _check_board():
 	# Tie
 	if tileMap.get_used_cells().size() == 9:
 		_winner(-1)
-
-func disable_ui():
-	$UI/vs.visible = false
-	$UI/player_1.visible = false
-	$UI/player_1_hover.visible = false
-	$UI/player_2.visible = false
-	$UI/player_2_hover.visible = false
-	$UI/pc.visible = false
-	$UI/pc_hover.visible = false
-	
 # vittoria
+
 func _winner(winner):
-	game_over = true
+	var risultato =  $UI/game_over/CenterContainer/VBoxContainer/risultato
+	var game_over_score = $UI/game_over/CenterContainer/VBoxContainer/game_over_score
 	
-	if GameManager.modality == GameManager.Enemies.COMPUTER:
-		winner+=10
+	game_over = true
 	match winner:
 		-1:
-			disable_ui()
-			$UI/hai_pareggiato.visible = true
+			risultato.text = "Pareggio"
+			MusicController.play_pareggio_music()
 		0:
-			disable_ui()
-			$UI/player_2_ha_vinto.visible = true
+			config.punteggio_player2 += 1
+			if config.modality == config.Enemies.MULTIPLAYER:
+				risultato.text = config.nome_avversario +"\nha vinto"
+				MusicController.play_vittoria_music()
+			else:
+				risultato.text = "Hai perso"
+				MusicController.play_sconfitta_music()
 		1:
-			disable_ui()
-			$UI/player_1_ha_vinto.visible = true
-		9:
-			disable_ui()
-			$UI/hai_pareggiato.visible = true
-		10:
-			disable_ui()
-			$UI/hai_perso.visible = true
-		11:
-			disable_ui()
-			$UI/hai_vinto.visible = true
+			config.punteggio_player1 += 1
+			if config.modality == config.Enemies.MULTIPLAYER:
+				risultato.text = config.nome +"\nha vinto"
+			else:
+				risultato.text = "Hai vinto"
+			MusicController.play_vittoria_music()
+	$UI/score.text = str(config.punteggio_player1) + "-" + str(config.punteggio_player2)
+	game_over_score.text = str(config.punteggio_player1) + "-" + str(config.punteggio_player2)
+	$UI/game_over.visible = true
 
 func _on_torna_al_menu_pressed():
-		get_tree().change_scene("res://scenes/Menu.tscn")
+	MusicController.play_selezione_music()
+	config.punteggio_player2 = 0
+	config.punteggio_player1 = 0
+	get_tree().change_scene("res://scenes/Menu.tscn")
 
 func _on_inizia_una_nuova_partita_pressed():
+		MusicController.play_selezione_music()
 		get_tree().reload_current_scene()
 
 func _on_Timer_timeout():
